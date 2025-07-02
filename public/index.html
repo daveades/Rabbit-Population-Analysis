@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Rabbit Population Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-rabbit fa-2x"></i>
+                <h1>Global Rabbit Population Dashboard</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#population">Population</a></li>
+                    <li><a href="#species">Species</a></li>
+                    <li><a href="#habitat">Habitat</a></li>
+                    <li><a href="#conservation">Conservation</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="overview" class="dashboard-section">
+            <h2>Global Overview</h2>
+            <div class="dashboard-cards">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-rabbit"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Total Population</h3>
+                        <p class="metric" id="total-population">Loading...</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Growth Rate</h3>
+                        <p class="metric" id="growth-rate">Loading...</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Regions</h3>
+                        <p class="metric" id="regions-count">Loading...</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Species</h3>
+                        <p class="metric" id="species-count">Loading...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div id="population-trend-chart" class="chart"></div>
+            </div>
+        </section>
+
+        <section id="population" class="dashboard-section">
+            <h2>Population Trends</h2>
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="region-filter">Region:</label>
+                    <select id="region-filter">
+                        <option value="all">All Regions</option>
+                        <!-- Regions will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="species-filter">Species:</label>
+                    <select id="species-filter">
+                        <option value="all">All Species</option>
+                        <!-- Species will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="year-range">Year Range:</label>
+                    <div id="year-range-slider"></div>
+                    <div class="year-labels">
+                        <span id="year-min">2000</span>
+                        <span id="year-max">2025</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div id="population-by-region-chart" class="chart"></div>
+            </div>
+        </section>
+
+        <section id="species" class="dashboard-section">
+            <h2>Species Distribution</h2>
+            <div class="chart-container">
+                <div id="species-distribution-chart" class="chart"></div>
+            </div>
+            <div class="species-info">
+                <div class="species-card" id="species-european">
+                    <h3>European Rabbit</h3>
+                    <p>The European rabbit is native to southwestern Europe and northwest Africa.</p>
+                </div>
+                <div class="species-card" id="species-cottontail">
+                    <h3>Cottontail</h3>
+                    <p>Cottontail rabbits are among the 20 species of lagomorph in the genus Sylvilagus.</p>
+                </div>
+                <div class="species-card" id="species-hare">
+                    <h3>Hare</h3>
+                    <p>Hares are fast-running, long-eared mammals in the genus Lepus.</p>
+                </div>
+                <div class="species-card" id="species-jackrabbit">
+                    <h3>Jackrabbit</h3>
+                    <p>Jackrabbits are hares found in western North America.</p>
+                </div>
+                <div class="species-card" id="species-pygmy">
+                    <h3>Pygmy Rabbit</h3>
+                    <p>The pygmy rabbit is the smallest rabbit in North America, with adults weighing about 1 pound.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="habitat" class="dashboard-section">
+            <h2>Habitat Analysis</h2>
+            <div class="chart-container">
+                <div id="habitat-chart" class="chart"></div>
+            </div>
+            <div class="habitat-info">
+                <div class="habitat-card">
+                    <h3>Forest</h3>
+                    <p>Forest habitats provide cover and diverse food sources for many rabbit species.</p>
+                </div>
+                <div class="habitat-card">
+                    <h3>Grassland</h3>
+                    <p>Open grasslands offer abundant vegetation and good visibility to spot predators.</p>
+                </div>
+                <div class="habitat-card">
+                    <h3>Desert</h3>
+                    <p>Some rabbit species have adapted to harsh desert conditions with special water conservation abilities.</p>
+                </div>
+                <div class="habitat-card">
+                    <h3>Urban</h3>
+                    <p>Increasingly, rabbits are adapting to human-modified landscapes and urban environments.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="conservation" class="dashboard-section">
+            <h2>Conservation Status</h2>
+            <div class="chart-container">
+                <div id="conservation-chart" class="chart"></div>
+            </div>
+            <div class="conservation-info">
+                <div class="status-card status-least-concern">
+                    <h3>Least Concern</h3>
+                    <p>Species that are widespread and abundant.</p>
+                </div>
+                <div class="status-card status-near-threatened">
+                    <h3>Near Threatened</h3>
+                    <p>Species close to qualifying for a threatened category in the near future.</p>
+                </div>
+                <div class="status-card status-vulnerable">
+                    <h3>Vulnerable</h3>
+                    <p>Species facing a high risk of extinction in the wild.</p>
+                </div>
+                <div class="status-card status-endangered">
+                    <h3>Endangered</h3>
+                    <p>Species that are very likely to become extinct in the near future.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="dashboard-section">
+            <h2>About This Dashboard</h2>
+            <div class="about-content">
+                <p>This Global Rabbit Population Dashboard provides comprehensive insights into rabbit populations worldwide, tracking trends, distribution patterns, and conservation statuses.</p>
+                <p>The data presented is collected from various wildlife organizations, research institutions, and conservation groups around the world.</p>
+                <p>This dashboard is designed to help researchers, conservationists, and wildlife managers make informed decisions about rabbit conservation and management.</p>
+                <h3>Data Sources</h3>
+                <ul>
+                    <li>World Wildlife Foundation (WWF)</li>
+                    <li>International Union for Conservation of Nature (IUCN)</li>
+                    <li>National wildlife databases from various countries</li>
+                    <li>Academic research studies and publications</li>
+                    <li>Citizen science initiatives and wildlife surveys</li>
+                </ul>
+                <h3>Technical Implementation</h3>
+                <p>This dashboard is built with Python using Flask, Pandas, and Plotly Dash for interactive visualizations.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2025 Global Rabbit Population Dashboard</p>
+            <p>Data updated: <span id="last-updated">July 2, 2025</span></p>
+        </div>
+    </footer>
+
+    <!-- Load Plotly.js for charts -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Load our dashboard JavaScript -->
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
