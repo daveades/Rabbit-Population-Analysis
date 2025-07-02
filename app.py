@@ -126,6 +126,22 @@ app.layout = dbc.Container(
                             className="mb-3",
                         ),
                         
+                        html.Div(
+                            [
+                                html.Label("Theme:", className="mr-2"),
+                                dbc.RadioItems(
+                                    id="theme-switch",
+                                    options=[
+                                        {"label": "Light", "value": "light"},
+                                        {"label": "Dark", "value": "dark"},
+                                    ],
+                                    value="light",
+                                    inline=True,
+                                ),
+                            ],
+                            className="mb-3",
+                        ),
+                        
                         html.Hr(),
                         
                         # Summary statistics
@@ -171,6 +187,21 @@ app.layout = dbc.Container(
                                         dcc.Graph(id="conservation-chart"),
                                     ],
                                     label="Conservation Status",
+                                ),
+                                # Add new tabs for geographic distribution and breeding patterns
+                                dbc.Tab(
+                                    [
+                                        html.H4("Geographic Distribution", className="text-center my-3"),
+                                        dcc.Graph(id="geographic-map"),
+                                    ],
+                                    label="Geographic Map",
+                                ),
+                                dbc.Tab(
+                                    [
+                                        html.H4("Breeding Patterns", className="text-center my-3"),
+                                        dcc.Graph(id="breeding-patterns-chart"),
+                                    ],
+                                    label="Breeding Patterns",
                                 ),
                             ]
                         )
@@ -371,6 +402,89 @@ def update_conservation_chart(regions, species, year_range, conservation_statuse
     )
     
     return fig
+
+
+# Callback to update geographic map
+@app.callback(
+    Output("geographic-map", "figure"),
+    [
+        Input("region-dropdown", "value"),
+        Input("species-dropdown", "value"),
+        Input("year-slider", "value"),
+        Input("conservation-checklist", "value"),
+    ],
+)
+def update_geographic_map(regions, species, year_range, conservation_statuses):
+    filtered_df = filter_dataframe(df, regions, species, year_range, conservation_statuses)
+    
+    # Get the most recent year
+    max_year = filtered_df["Year"].max()
+    
+    # Import visualization function from charts module
+    from src.visualization.charts import create_geographic_map
+    
+    # Generate the map
+    fig = create_geographic_map(filtered_df, max_year)
+    
+    return fig
+
+
+# Callback to update breeding patterns chart
+@app.callback(
+    Output("breeding-patterns-chart", "figure"),
+    [
+        Input("region-dropdown", "value"),
+        Input("species-dropdown", "value"),
+        Input("year-slider", "value"),
+        Input("conservation-checklist", "value"),
+    ],
+)
+def update_breeding_patterns(regions, species, year_range, conservation_statuses):
+    filtered_df = filter_dataframe(df, regions, species, year_range, conservation_statuses)
+    
+    # Import visualization function from charts module
+    from src.visualization.charts import create_breeding_patterns_chart
+    
+    # Generate the chart
+    fig = create_breeding_patterns_chart(filtered_df, species, regions)
+    
+    return fig
+
+
+# Callback to update theme
+@app.callback(
+    Output("population-trend-chart", "figure", allow_duplicate=True),
+    Output("species-distribution-chart", "figure", allow_duplicate=True),
+    Output("habitat-chart", "figure", allow_duplicate=True),
+    Output("conservation-chart", "figure", allow_duplicate=True),
+    Output("geographic-map", "figure", allow_duplicate=True),
+    Output("breeding-patterns-chart", "figure", allow_duplicate=True),
+    Input("theme-switch", "value"),
+    prevent_initial_call=True,
+)
+def update_theme(theme):
+    """
+    Update chart themes based on the theme switch value.
+    """
+    # Get all current figures
+    ctx = dash.callback_context
+    
+    # Update template for all figures
+    template = "plotly_dark" if theme == "dark" else "plotly_white"
+    
+    # Get the current charts
+    trend_fig = update_population_trend(None, None, None, None)
+    species_fig = update_species_distribution(None, None, None, None)
+    habitat_fig = update_habitat_chart(None, None, None, None)
+    conservation_fig = update_conservation_chart(None, None, None, None)
+    geo_fig = update_geographic_map(None, None, None, None)
+    breeding_fig = update_breeding_patterns(None, None, None, None)
+    
+    # Update each figure's template
+    for fig in [trend_fig, species_fig, habitat_fig, conservation_fig, geo_fig, breeding_fig]:
+        fig.update_layout(template=template)
+    
+    return trend_fig, species_fig, habitat_fig, conservation_fig, geo_fig, breeding_fig
 
 
 # Helper function to filter dataframe based on user selections
