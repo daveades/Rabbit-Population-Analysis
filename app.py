@@ -579,8 +579,19 @@ if __name__ == "__main__":
     # Get debug mode from environment
     debug_mode = os.environ.get("ENVIRONMENT", "development") == "development"
     
-    app.run_server(
-        host="0.0.0.0",  # Accept connections from any IP
-        port=port,       # Use Render's assigned port
-        debug=debug_mode # Only debug in development
-    )
+    # For production deployment, use the server directly
+    if os.environ.get("ENVIRONMENT") == "production":
+        # Production mode - use the underlying Flask server
+        server = app.server
+        server.run(
+            host="0.0.0.0",
+            port=port,
+            debug=False
+        )
+    else:
+        # Development mode - use Dash's built-in server
+        app.run_server(
+            host="0.0.0.0",
+            port=port,
+            debug=debug_mode
+        )
