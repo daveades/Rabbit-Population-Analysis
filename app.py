@@ -12,9 +12,21 @@ import plotly.express as px
 import io
 import base64
 
-# Import local modules
-from src.analysis.data_processor import load_data
-from src.visualization.charts import create_population_chart, create_species_distribution_chart
+# Import local modules with error handling
+try:
+    from src.analysis.data_processor import load_data
+    from src.visualization.charts import create_population_chart, create_species_distribution_chart
+except ImportError as e:
+    print(f"Warning: Could not import local modules: {e}")
+    # Define fallback function
+    def load_data():
+        raise FileNotFoundError("No data processor available")
+    
+    def create_population_chart(data):
+        return None
+    
+    def create_species_distribution_chart(data):
+        return None
 
 # Initialize the Dash app
 app = dash.Dash(
