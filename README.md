@@ -49,8 +49,23 @@ This dashboard provides comprehensive insights into global rabbit population dyn
 
 ### Quick Setup
 1. Clone this repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Run the application: `python app.py`
+2. Create a virtual environment and install dependencies:
+   ```bash
+   # Set up the virtual environment
+   python3 -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   
+   # Install dependencies
+   pip install -r requirements.txt
+   ```
+3. Run the application:
+   ```bash
+   # Option 1: Directly with Python
+   python app.py
+   
+   # Option 2: Using the provided script
+   ./run.sh
+   ```
 4. Open your browser at `http://localhost:8050`
 
 ## 📊 Dashboard Components
