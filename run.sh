@@ -1,4 +1,10 @@
 #!/bin/bash
 
-# Run the application with the virtual environment Python
-/home/daveades/layovated/.venv/bin/python app.py
+# Production start script for Render
+echo "Starting Global Rabbit Population Dashboard..."
+
+# Set production environment
+export ENVIRONMENT=production
+
+# Run the application
+python app.py

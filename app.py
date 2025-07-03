@@ -447,4 +447,14 @@ def export_data(csv_clicks, json_clicks, regions, species, year_range, conservat
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    import os
+    # Get port from environment variable (Render sets this)
+    port = int(os.environ.get("PORT", 8050))
+    # Get debug mode from environment
+    debug_mode = os.environ.get("ENVIRONMENT", "development") == "development"
+    
+    app.run_server(
+        host="0.0.0.0",  # Accept connections from any IP
+        port=port,       # Use Render's assigned port
+        debug=debug_mode # Only debug in development
+    )
