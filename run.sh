@@ -1,10 +1,4 @@
 #!/bin/bash
 
-# Activate virtual environment
-source .venv/bin/activate
-
-# Run the application
-python app.py
-
-# Deactivate virtual environment when the app is stopped
-deactivate
+# Run the application with the virtual environment Python
+/home/daveades/layovated/.venv/bin/python app.py
