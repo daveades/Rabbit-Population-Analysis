@@ -9,6 +9,8 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 import pandas as pd
 import plotly.express as px
+import io
+import base64
 
 # Import local modules
 from src.analysis.data_processor import load_data
@@ -130,6 +132,19 @@ app.layout = dbc.Container(
                         
                         # Summary statistics
                         html.Div(id="summary-stats", className="my-4"),
+                        
+                        # Data export section
+                        html.Hr(),
+                        html.H5("Data Export", className="text-center"),
+                        html.P("Export filtered data:", className="mb-2"),
+                        dbc.ButtonGroup(
+                            [
+                                dbc.Button("CSV", id="export-csv", color="primary", size="sm"),
+                                dbc.Button("JSON", id="export-json", color="secondary", size="sm"),
+                            ],
+                            className="mb-3 d-grid",
+                        ),
+                        dcc.Download(id="download-data"),
                     ],
                     width=3,
                     className="bg-light p-3 border rounded",
@@ -394,6 +409,41 @@ def filter_dataframe(df, regions, species, year_range, conservation_statuses):
         filtered_df = filtered_df[filtered_df["Conservation_Status"].isin(conservation_statuses)]
     
     return filtered_df
+
+
+# Callback for data export
+@app.callback(
+    Output("download-data", "data"),
+    [
+        Input("export-csv", "n_clicks"),
+        Input("export-json", "n_clicks"),
+    ],
+    [
+        Input("region-dropdown", "value"),
+        Input("species-dropdown", "value"),
+        Input("year-slider", "value"),
+        Input("conservation-checklist", "value"),
+    ],
+    prevent_initial_call=True,
+)
+def export_data(csv_clicks, json_clicks, regions, species, year_range, conservation_statuses):
+    """Handle data export in CSV or JSON format."""
+    ctx = dash.callback_context
+    if not ctx.triggered:
+        return None
+    
+    # Get the filtered data
+    filtered_df = filter_dataframe(df, regions, species, year_range, conservation_statuses)
+    
+    # Determine which button was clicked
+    button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+    
+    if button_id == "export-csv":
+        return dcc.send_data_frame(filtered_df.to_csv, "rabbit_population_data.csv", index=False)
+    elif button_id == "export-json":
+        return dcc.send_data_frame(filtered_df.to_json, "rabbit_population_data.json", orient="records")
+    
+    return None
 
 
 if __name__ == "__main__":
