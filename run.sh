@@ -6,5 +6,9 @@ echo "Starting Global Rabbit Population Dashboard..."
 # Set production environment
 export ENVIRONMENT=production
 
-# Run the application
-python app.py
+# Start with Gunicorn for production
+# Use the exposed Flask server instance (named 'server')
+exec gunicorn app:server \
+    --bind 0.0.0.0:${PORT:-8050} \
+    --workers 4 \
+    --log-level info

@@ -35,5 +35,5 @@ nbconvert>=7.2.9
 ipykernel>=6.19.4
 
 # Geospatial packages - Comment these out if they cause build issues on Render
-# geopandas>=0.12.2
-# folium>=0.14.0
+# Production server
+gunicorn>=20.1.0
