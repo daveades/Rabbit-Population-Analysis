@@ -1,54 +1,72 @@
 # 🐰 Global Rabbit Population Dashboard
 
-An interactive web dashboard for visualizing and analyzing worldwide rabbit population trends, powered by Python data analysis and interactive Plotly visualizations.
+Welcome to the Global Rabbit Population Dashboard! This tool helps you explore rabbit population data from around the world. With clear visuals and useful insights, it shows how rabbit populations are distributed, their habitats, and the challenges they face.
 
-## Project Overview
+## What Is This Dashboard About?
 
-This project is a data visualization dashboard that explores global rabbit population dynamics. It provides interactive insights into population trends, species distribution, conservation status, and habitat analysis through an intuitive web interface.
+This project is designed to make rabbit population data accessible and engaging. Through an intuitive web interface, you can:
+
+- View population trends over time
+- Explore species distribution across regions
+- Understand conservation challenges
+- Analyze how habitats affect populations
+
+The dashboard updates in real-time, responding instantly to your inputs.
 
 ## How It Works
 
-The dashboard combines several key components that work together to provide data-driven insights:
+The dashboard combines data processing, visualization, and web technologies. Here’s a breakdown of its main components:
 
 ### Core Components
 
 1. **Data Processing Pipeline** (`src/analysis/data_processor.py`)
-   - Handles loading and preprocessing of rabbit population data
-   - Performs data transformations for visualization readiness
-   - Supports both CSV data files and sample data generation
+   - Prepares raw data for visualization
+   - Handles CSV data or generates sample data for testing
 
 2. **Visualization Engine** (`src/visualization/charts.py`)
-   - Creates interactive Plotly charts for population trends
-   - Generates species distribution visualizations
-   - Provides habitat analysis and conservation status charts
+   - Creates interactive charts with Plotly
+   - Visualizes species distribution, habitat impacts, and conservation statuses
 
 3. **Web Application** (`app.py`)
-   - Builds the interactive Dash/Flask web interface
-   - Manages user interactions and filter selections
-   - Coordinates data flow between processing and visualization components
+   - Provides a responsive interface using Dash and Flask
+   - Connects data, visualizations, and user interactions
 
 4. **API Layer** (`src/api/routes.py`)
-   - Provides REST endpoints for accessing rabbit population data
-   - Enables external applications to consume dashboard data
+   - Offers endpoints for accessing rabbit population data
 
 ### User Experience
 
-The dashboard offers an intuitive interface with multiple interactive visualizations:
+The dashboard is user-friendly and interactive. You can:
 
-- **Population Trends**: Track how rabbit populations change over time
-- **Species Distribution**: Explore geographic spread of different rabbit species
-- **Conservation Status**: Monitor endangered and vulnerable populations
-- **Habitat Analysis**: Understand environmental impact on populations
+- Track population changes with dynamic charts
+- Explore species distribution across regions
+- Monitor endangered populations
+- Analyze habitat influences on populations
 
-All visualizations update dynamically as users interact with filters for time periods, regions, species, and conservation status.
+Charts update instantly as you adjust filters for time, region, species, or conservation status.
 
 ### Data Flow
 
-1. Raw rabbit population data is processed through the data pipeline
-2. The visualization engine transforms this data into interactive charts
-3. The web application presents these visualizations with user controls
-4. User interactions trigger real-time updates to all visualizations
+1. Raw data is processed through the pipeline.
+2. The visualization engine creates charts.
+3. The web app displays these charts with interactive controls.
+4. Your inputs reshape the data views in real-time.
 
-## Running the Project
+## Getting Started
 
-Simply execute `python app.py` or use the provided `run.sh` script to launch the dashboard. The application will be available at `http://127.0.0.1:8050/` in your web browser.
+### Local Development
+
+To run the dashboard locally, use:
+```bash
+python app.py
+```
+Or run the included script:
+```bash
+chmod +x run.sh
+./run.sh
+```
+
+Open your browser at `http://127.0.0.1:8050/` to access the dashboard.
+
+### Production Deployment
+In production environments like Render, the app automatically switches to production mode. It detects environment variables to configure itself and suppresses development warnings for a smoother experience.
