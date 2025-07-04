@@ -528,7 +528,8 @@ def filter_dataframe(df, regions, species, year_range, conservation_statuses):
         filtered_df = filtered_df[filtered_df["Species"].isin(species)]
     
     # Filter by year range
-    filtered_df = filtered_df[(filtered_df["Year"] >= year_range[0]) & (filtered_df["Year"] <= year_range[1])]
+    if year_range and len(year_range) == 2:
+        filtered_df = filtered_df[(filtered_df["Year"] >= year_range[0]) & (filtered_df["Year"] <= year_range[1])]
     
     # Filter by conservation status
     if conservation_statuses and len(conservation_statuses) > 0:

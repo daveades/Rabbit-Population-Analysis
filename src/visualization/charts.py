@@ -5,6 +5,7 @@ Charts module for creating visualizations for the rabbit population dashboard
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
+import numpy as np
 
 
 def create_population_chart(df, regions=None, species=None, year_range=None):
