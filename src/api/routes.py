@@ -175,6 +175,134 @@ def get_trends():
         }), 500
 
 
+@api_bp.route('/trending', methods=['GET'])
+def get_trending_data():
+    """
+    API endpoint to get trending data for rabbit populations.
+    
+    Returns:
+        JSON: Trending data in JSON format
+    """
+    try:
+        # Load data
+        df = load_data()
+        
+        # Process data to identify trends
+        from src.analysis.data_processor import preprocess_data, identify_population_trends
+        
+        # Preprocess the data
+        processed_df = preprocess_data(df)
+        
+        # Identify trends
+        trend_data = identify_population_trends(processed_df)
+        
+        # Convert to dictionary for JSON response
+        trends = trend_data.to_dict(orient='records')
+        
+        # Get top increasing and decreasing populations
+        top_increasing = trend_data.sort_values('Slope', ascending=False).head(5).to_dict(orient='records')
+        top_decreasing = trend_data.sort_values('Slope', ascending=True).head(5).to_dict(orient='records')
+        
+        return jsonify({
+            'status': 'success',
+            'data': {
+                'all_trends': trends,
+                'top_increasing': top_increasing,
+                'top_decreasing': top_decreasing,
+                'count': len(trends)
+            }
+        })
+    
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+
+@api_bp.route('/habitat-analysis', methods=['GET'])
+def get_habitat_analysis():
+    """
+    API endpoint to get habitat analysis for rabbit populations.
+    
+    Query parameters:
+    - region: Filter by region
+    - species: Filter by species
+    - year: Specific year to analyze
+    
+    Returns:
+        JSON: Habitat analysis in JSON format
+    """
+    try:
+        # Load data
+        df = load_data()
+        
+        # Get query parameters
+        region = request.args.get('region')
+        species = request.args.get('species')
+        year = request.args.get('year')
+        
+        # Filter data
+        filtered_df = df.copy()
+        
+        if region:
+            filtered_df = filtered_df[filtered_df['Region'] == region]
+        
+        if species:
+            filtered_df = filtered_df[filtered_df['Species'] == species]
+        
+        if year:
+            filtered_df = filtered_df[filtered_df['Year'] == int(year)]
+        else:
+            # Default to most recent year
+            filtered_df = filtered_df[filtered_df['Year'] == filtered_df['Year'].max()]
+        
+        # Perform habitat analysis
+        habitat_stats = filtered_df.groupby('Habitat').agg({
+            'Population': ['sum', 'mean', 'std', 'count'],
+            'Conservation_Status': lambda x: (x == 'Endangered').mean() * 100  # % endangered
+        }).reset_index()
+        
+        # Rename columns
+        habitat_stats.columns = ['Habitat', 'Total_Population', 'Mean_Population', 
+                                'Std_Dev_Population', 'Species_Count', 'Pct_Endangered']
+        
+        # Calculate percentage of total
+        total_pop = habitat_stats['Total_Population'].sum()
+        habitat_stats['Pct_Of_Total'] = (habitat_stats['Total_Population'] / total_pop * 100) if total_pop > 0 else 0
+        
+        # Convert to dictionary for JSON response
+        habitat_data = habitat_stats.to_dict(orient='records')
+        
+        # Get dominant species in each habitat
+        dominant_species = []
+        for habitat in filtered_df['Habitat'].unique():
+            habitat_df = filtered_df[filtered_df['Habitat'] == habitat]
+            by_species = habitat_df.groupby('Species')['Population'].sum().reset_index()
+            if not by_species.empty:
+                dominant = by_species.sort_values('Population', ascending=False).iloc[0]
+                dominant_species.append({
+                    'Habitat': habitat,
+                    'Dominant_Species': dominant['Species'],
+                    'Population': int(dominant['Population'])
+                })
+        
+        return jsonify({
+            'status': 'success',
+            'data': {
+                'habitat_stats': habitat_data,
+                'dominant_species': dominant_species,
+                'year': int(year) if year else int(filtered_df['Year'].max())
+            }
+        })
+    
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+
 def register_api_routes(app):
     """
     Register the API Blueprint with the Flask app.
