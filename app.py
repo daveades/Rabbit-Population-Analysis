@@ -11,24 +11,10 @@ import pandas as pd
 import plotly.express as px
 import io
 import base64
+from src.analysis.data_processor import generate_sample_data
+from src.visualization.charts import create_population_chart, create_species_distribution_chart
 
-# Import local modules with error handling
-try:
-    from src.analysis.data_processor import load_data
-    from src.visualization.charts import create_population_chart, create_species_distribution_chart
-except ImportError as e:
-    print(f"Warning: Could not import local modules: {e}")
-    # Define fallback function
-    def load_data():
-        raise FileNotFoundError("No data processor available")
-    
-    def create_population_chart(data):
-        return None
-    
-    def create_species_distribution_chart(data):
-        return None
-
-# Initialize the Dash app
+# Initialize the Dash app and load sample data
 app = dash.Dash(
     __name__,
     external_stylesheets=[dbc.themes.BOOTSTRAP],
@@ -38,41 +24,7 @@ app = dash.Dash(
 app.title = "Global Rabbit Population Dashboard"
 server = app.server
 
-# Load sample data (will be replaced with actual data loading function)
-try:
-    df = load_data()
-except FileNotFoundError:
-    # Create sample data if real data is not available yet
-    import numpy as np
-    
-    # Sample data for initial development
-    years = list(range(2000, 2026))
-    regions = ['North America', 'Europe', 'Asia', 'Africa', 'Australia', 'South America']
-    species = ['European Rabbit', 'Cottontail', 'Hare', 'Jackrabbit', 'Pygmy Rabbit']
-    
-    # Generate sample population data
-    data = []
-    for year in years:
-        for region in regions:
-            for specie in species:
-                # Create some variation in the data with upward trend and seasonal pattern
-                base_population = np.random.randint(10000, 50000)
-                trend = (year - 2000) * 500  # Increasing trend over time
-                seasonal = np.sin(year) * 2000  # Some seasonal variation
-                random_factor = np.random.normal(0, 5000)  # Random noise
-                
-                population = max(100, base_population + trend + seasonal + random_factor)
-                
-                data.append({
-                    'Year': year,
-                    'Region': region,
-                    'Species': specie,
-                    'Population': int(population),
-                    'Habitat': np.random.choice(['Forest', 'Grassland', 'Desert', 'Urban']),
-                    'Conservation_Status': np.random.choice(['Least Concern', 'Near Threatened', 'Vulnerable', 'Endangered'], p=[0.6, 0.2, 0.15, 0.05])
-                })
-    
-    df = pd.DataFrame(data)
+df = generate_sample_data()
 
 # App layout
 app.layout = dbc.Container(
@@ -156,8 +108,6 @@ app.layout = dbc.Container(
                             className="mb-3",
                         ),
                         
-                        html.Hr(),
-                        
                         # Summary statistics
                         html.Div(id="summary-stats", className="my-4"),
                         
@@ -215,7 +165,6 @@ app.layout = dbc.Container(
                                     ],
                                     label="Conservation Status",
                                 ),
-                                # Add new tabs for geographic distribution and breeding patterns
                                 dbc.Tab(
                                     [
                                         html.H4("Geographic Distribution", className="text-center my-3"),

@@ -1,72 +1,44 @@
 # 🐰 Global Rabbit Population Dashboard
 
-Welcome to the Global Rabbit Population Dashboard! This tool helps you explore rabbit population data from around the world. With clear visuals and useful insights, it shows how rabbit populations are distributed, their habitats, and the challenges they face.
+This is a simple dashboard for exploring global rabbit population data. It uses Dash and Plotly to track trends, compare species, and show habitat impacts in real time.
 
-## What Is This Dashboard About?
+## Features
 
-This project is designed to make rabbit population data accessible and engaging. Through an intuitive web interface, you can:
+- Track rabbit population trends over time
+- Compare species distribution by region
+- View how different habitats affect populations
+- Check conservation status at a glance
 
-- View population trends over time
-- Explore species distribution across regions
-- Understand conservation challenges
-- Analyze how habitats affect populations
-
-The dashboard updates in real-time, responding instantly to your inputs.
-
-## How It Works
-
-The dashboard combines data processing, visualization, and web technologies. Here’s a breakdown of its main components:
-
-### Core Components
-
-1. **Data Processing Pipeline** (`src/analysis/data_processor.py`)
-   - Prepares raw data for visualization
-   - Handles CSV data or generates sample data for testing
-
-2. **Visualization Engine** (`src/visualization/charts.py`)
-   - Creates interactive charts with Plotly
-   - Visualizes species distribution, habitat impacts, and conservation statuses
-
-3. **Web Application** (`app.py`)
-   - Provides a responsive interface using Dash and Flask
-   - Connects data, visualizations, and user interactions
-
-4. **API Layer** (`src/api/routes.py`)
-   - Offers endpoints for accessing rabbit population data
-
-### User Experience
-
-The dashboard is user-friendly and interactive. You can:
-
-- Track population changes with dynamic charts
-- Explore species distribution across regions
-- Monitor endangered populations
-- Analyze habitat influences on populations
-
-Charts update instantly as you adjust filters for time, region, species, or conservation status.
-
-### Data Flow
-
-1. Raw data is processed through the pipeline.
-2. The visualization engine creates charts.
-3. The web app displays these charts with interactive controls.
-4. Your inputs reshape the data views in real-time.
+Filters update instantly as you make selections.
 
 ## Getting Started
 
-### Local Development
+### Local Setup
 
-To run the dashboard locally, use:
-```bash
-python app.py
-```
-Or run the included script:
-```bash
-chmod +x run.sh
-./run.sh
-```
-
-Open your browser at `http://127.0.0.1:8050/` to access the dashboard.
+1. Clone this repository.
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Launch the dashboard:
+   ```bash
+   python app.py
+   ```
+4. Open your browser at `http://127.0.0.1:8050/`.
 
 ### Production Deployment
-In production environments like Render, the app automatically switches to production mode. It detects environment variables to configure itself and suppresses development warnings for a smoother experience.
+
+On hosting platforms like Render, the app auto-switches to production mode. Just:
+
+1. Make sure `gunicorn` is listed in `requirements.txt`.
+2. Set the start command to `./run.sh` (already executable).
+3. Point your service URL to the live dashboard.
+
+## How It Works
+
+- **Data Generation**: Sample data is created by `src/analysis/data_processor.py`.
+- **Visuals Engine**: Charts and maps live in `src/visualization/charts.py`.
+- **Web App**: `app.py` ties everything together with Dash and Flask.
+- **API (Optional)**: `src/api/routes.py` provides JSON endpoints if you need raw data.
+
+Enjoy exploring rabbit populations—no scientific background required!

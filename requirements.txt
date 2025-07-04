@@ -17,23 +17,21 @@ plotly>=5.14.1
 # Scientific computing - Required for core functionality
 scipy>=1.10.1
 
-# Optional packages for development/testing
-# Uncomment these for local development if needed
+# Development-only (optional)
 matplotlib>=3.7.1
 seaborn>=0.12.2
 scikit-learn>=1.2.2
 
-# Testing tools - Not required in production
+# Testing tools
 pytest>=7.3.1
 pylint>=2.17.0
 black>=23.3.0
 
-# Jupyter notebook support - Not required in production
+# Jupyter notebook support
 notebook>=6.5.4
 jupyter-console>=6.6.3
 nbconvert>=7.2.9
 ipykernel>=6.19.4
 
-# Geospatial packages - Comment these out if they cause build issues on Render
 # Production server
 gunicorn>=20.1.0

@@ -162,8 +162,7 @@ def generate_sample_data(output_path='data/processed/rabbit_population.csv'):
     
     df = pd.DataFrame(data)
     
-    # Make sure directory exists
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)  # ensure output directory exists
     
     # Save to CSV
     df.to_csv(output_path, index=False)
