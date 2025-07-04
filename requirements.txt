@@ -1,24 +1,39 @@
-dash==2.14.1
-dash-bootstrap-components==1.4.2
-dash-core-components==2.0.0
-dash-html-components==2.0.0
-dash-table==5.0.0
-flask==2.3.2
-werkzeug==2.3.6
-pandas==1.5.3
-numpy==1.24.3
-plotly==5.14.1
-matplotlib==3.7.1
-seaborn==0.12.2
-scikit-learn==1.2.2
-geopandas==0.12.2
-folium==0.14.0
-# Using individual jupyter components instead of the metapackage
-notebook==6.5.4
-jupyter-console==6.6.3
-nbconvert==7.2.9
-ipykernel==6.19.4
-scipy==1.10.1
-pytest==7.3.1
-pylint==2.17.0
-black==23.3.0
+# Core dashboard dependencies
+dash>=2.14.1
+dash-bootstrap-components>=1.4.2
+dash-core-components>=2.0.0
+dash-html-components>=2.0.0
+dash-table>=5.0.0
+flask>=2.3.2
+werkzeug>=2.3.6
+
+# Data processing
+pandas>=1.5.3
+numpy>=1.24.3
+
+# Visualization
+plotly>=5.14.1
+
+# Scientific computing - Required for core functionality
+scipy>=1.10.1
+
+# Optional packages for development/testing
+# Uncomment these for local development if needed
+matplotlib>=3.7.1
+seaborn>=0.12.2
+scikit-learn>=1.2.2
+
+# Testing tools - Not required in production
+pytest>=7.3.1
+pylint>=2.17.0
+black>=23.3.0
+
+# Jupyter notebook support - Not required in production
+notebook>=6.5.4
+jupyter-console>=6.6.3
+nbconvert>=7.2.9
+ipykernel>=6.19.4
+
+# Geospatial packages - Comment these out if they cause build issues on Render
+# geopandas>=0.12.2
+# folium>=0.14.0
