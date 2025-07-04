@@ -577,20 +577,26 @@ if __name__ == "__main__":
     import os
     # Get port from environment variable (Render sets this)
     port = int(os.environ.get("PORT", 8050))
-    # Get debug mode from environment
-    debug_mode = os.environ.get("ENVIRONMENT", "development") == "development"
     
-    # For production deployment, use the server directly
-    if os.environ.get("ENVIRONMENT") == "production":
-        # Production mode - use the underlying Flask server
-        server = app.server
-        server.run(
+    # Check if we're running on Render (Render sets this environment variable)
+    is_render = "RENDER" in os.environ
+    
+    # Set environment based on Render detection or explicit environment variable
+    environment = os.environ.get("ENVIRONMENT", "production" if is_render else "development")
+    debug_mode = environment == "development"
+    
+    print(f"Starting server in {environment} mode on port {port}")
+    
+    # For production deployment, use production-ready settings
+    if environment == "production":
+        # Use Gunicorn if available (in production), otherwise fall back to Flask's production server
+        app.run_server(
             host="0.0.0.0",
             port=port,
             debug=False
         )
     else:
-        # Development mode - use Dash's built-in server
+        # Development mode - use Dash's built-in server with debug enabled
         app.run_server(
             host="0.0.0.0",
             port=port,
